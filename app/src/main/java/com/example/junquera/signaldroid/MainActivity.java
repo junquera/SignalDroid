@@ -1,19 +1,12 @@
-package com.example.junquera.myapplication;
+package com.example.junquera.signaldroid;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.telephony.*;
 import android.os.Bundle;
-import android.telephony.CellInfo;
-import android.telephony.CellInfoGsm;
-import android.telephony.CellSignalStrengthGsm;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
-import java.util.List;
 
 
 public class MainActivity extends Activity {

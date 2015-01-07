@@ -1,4 +1,4 @@
-package com.example.junquera.myapplication;
+package com.example.junquera.signaldroid;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
