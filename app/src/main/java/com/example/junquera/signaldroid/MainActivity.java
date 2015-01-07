@@ -39,10 +39,6 @@ public class MainActivity extends Activity {
 
     }
 
-    public void editaSenal(){
-        CellSignalStrengthWcdma cssw = (CellSignalStrengthWcdma) ((CellInfoWcdma) telephonyManager.getAllCellInfo().get(0)).getCellSignalStrength();
-        t.setText(cssw.getDbm() + "");
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
