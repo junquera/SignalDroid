@@ -1,41 +1,39 @@
-package com.example.junquera.signaldroid;
+package es.junquera.signaldroid;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.telephony.*;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.List;
+
 
 public class MainActivity extends Activity {
 
-    public TextView t;
 
-    public TelephonyManager telephonyManager;
-    MyPhoneStateListener mpsl;
+    private TelephonyManager telephonyManager;
+    private MyPhoneStateListener mpsl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        t =  (TextView) findViewById(R.id.texto);
         telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-        mpsl = new MyPhoneStateListener(t, telephonyManager);
+        mpsl = new MyPhoneStateListener((TextView) findViewById(R.id.wcdma),(TextView) findViewById(R.id.gsm), telephonyManager);
         telephonyManager.listen(mpsl, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
-        //CellSignalStrengthWcdma cssw = (CellSignalStrengthWcdma) ((CellInfoWcdma) telephonyManager.getAllCellInfo().get(0)).getCellSignalStrength();
+
     }
 
     @Override
     protected void onStart() {
 
         super.onStart();
-
-
-
-
 
     }
 
@@ -65,38 +63,40 @@ public class MainActivity extends Activity {
 }
 
 class MyPhoneStateListener extends PhoneStateListener{
-    TextView t;
+    TextView wcdma, gsm;
     TelephonyManager tm;
 
-    public MyPhoneStateListener(TextView t, TelephonyManager tm){
+    public MyPhoneStateListener(TextView wcdma, TextView gsm, TelephonyManager tm){
         super();
-        this.t = t;
+        this.wcdma = wcdma;
         this.tm = tm;
+        this.gsm = gsm;
     }
 
     public void onSignalStrengthsChanged(SignalStrength signalStrength){
         super.onSignalStrengthsChanged(signalStrength);
 
-        int signalWcdma = ((CellInfoWcdma) tm.getAllCellInfo().get(0)).getCellSignalStrength().getAsuLevel();
+
+        List<CellInfo> lci = tm.getAllCellInfo();
+
+
+
+        int signalWcdma = lci == null? 99 : ((CellInfoWcdma) lci.get(0)).getCellSignalStrength().getAsuLevel();
         int signalGsm = signalStrength.getGsmSignalStrength();
 
-        String signal = "WCDMA: ";
 
         if(signalWcdma == 99){
-            signal += "=(";
+            wcdma.setText("=(");
         }else{
-            signal += signalWcdma;
+            wcdma.setText(signalWcdma + "");
         }
-
-        signal += "\nGSM: ";
 
         if(signalGsm == 99){
-            signal += "=(";
+            gsm.setText("=(");
         } else{
-            signal += signalStrength.getGsmSignalStrength();
+            gsm.setText(signalGsm + "");
         }
 
-        t.setText(signal);
 
     }
 }
